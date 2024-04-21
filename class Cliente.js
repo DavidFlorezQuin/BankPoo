@@ -1,4 +1,4 @@
-class Cliente {
+class Banco {
     constructor(nombre, direccion, telefono) {
         this._nombre = nombre;
         this._direccion = direccion;
