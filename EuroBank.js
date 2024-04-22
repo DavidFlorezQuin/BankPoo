@@ -6,19 +6,6 @@ class EuroBank extends Banco {
         this.intereses = intereses; 
     }
 
-    TransferirDinero(montoTransferir, recaudo, cuenta) {
-        let totalTransferir = montoTransferir * recaudo;
-
-        if (totalTransferir <= this.saldoInicial) {
-            this.saldoInicial -= totalTransferir;
-            console.log("El dinero se transferirá a la cuenta: " + cuenta);
-            console.log("El saldo que queda es de $" + this.saldoInicial);
-        } else {
-          console.log(totalTransferir); //1212
-          console.log(this.saldoInicial); //0
-            console.log("El saldo es insuficiente");
-        }
-    }
 }
 
 // Ejemplo de uso de la clase EuroBank
