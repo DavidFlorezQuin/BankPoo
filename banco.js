@@ -1,32 +1,37 @@
 
-// CONSTRUCTOR
-
+///CLASE PADRE
 class Banco {
+   // Constructor de la clase Banco
    constructor(nombre, saldoInicial = 0) {
-      this.nombre = nombre
-      this.saldoInicial = saldoInicial
+      this.nombre = nombre; // Asigna el nombre del banco
+      this.saldoInicial = saldoInicial; // Asigna el saldo inicial
    }
 
    // ENCAPSULAMIENTO
 
+   // Setter para el nombre del banco
    set nombre(nombre) {
-      this._nombre = this.nombre;
+      this._nombre = nombre; // Asigna el nombre utilizando una variable interna
    }
 
+   // Getter para el nombre del banco
    get nombre() {
-      return this._nombre;
-   }
-   set saldoInicial(saldoInicial) {
-      this._saldoInicial = saldoInicial;
+      return this._nombre; // Retorna el nombre almacenado en la variable interna
    }
 
+   // Setter para el saldo inicial
+   set saldoInicial(saldoInicial) {
+      this._saldoInicial = saldoInicial; // Asigna el saldo inicial utilizando una variable interna
+   }
+
+   // Getter para el saldo inicial
    get saldoInicial() {
-      return this._saldoInicial;
+      return this._saldoInicial; // Retorna el saldo inicial almacenado en la variable interna
    }
 
    // MÉTODO DEPOSITAR
    Depositar(montoDepositar) {
-      this.saldoInicial += montoDepositar;
+      this.saldoInicial += montoDepositar; // Incrementa el saldo con el monto depositado
       console.log();
       console.log("Depositar:");
       console.log("Se depositó $" + montoDepositar);
@@ -37,7 +42,7 @@ class Banco {
    // MÉTODO DE RETIRAR DINERO
    Retirar(vRetirar) {
       if (vRetirar <= this.saldoInicial) {
-         this.saldoInicial -= vRetirar;
+         this.saldoInicial -= vRetirar; // Reduce el saldo con el monto a retirar
          console.log("Retirar:");
          console.log("Retiraste $" + vRetirar + ". El saldo actual es de $" + this.saldoInicial)
          console.log();
@@ -56,44 +61,14 @@ class Banco {
 
    // PRESTAR DINERO A UNA CUOTA
    Prestar(montoPrestar, montoTotal, interes = 1.10) {
-      montoTotal = montoPrestar * interes;
+      montoTotal = montoPrestar * interes; // Calcula el monto total a pagar con intereses
       console.log("Prestamo:");
       console.log("La tasa de interes es del " + interes + "%");
       console.log("Realizas un prestamo de $" + montoPrestar + " el total a pagar con intereses es de $" + montoTotal);
       console.log();
    }
 
-
-   TransferirDinero(montoTransferir, recaudo, cuenta) {
-
-      let totalTransferir = montoTransferir * recaudo;
-
-      if (totalTransferir <= this.saldoInicial) {
-
-         this.saldoInicial -= totalTransferir;
-         console.log("El dinero se tranferirá a la cuenta: " + cuenta)
-         console.log("El saldo que quedo es de $" + this.saldoInicial)
-      } else {
-         console.log("El saldo es insuficiente")
-      }
-   }
-
-   //PRESTAR DINERO A 5 CUOTAS CON EL VALOR DE INTERES ACUMULADOS
-   SimularPrestamo(tasaInteres, cantidadPrestamo, cantidadCuotas) {
-      if (tasaInteres <= 0 || cantidadPrestamo <= 0 || cantidadCuotas <= 0) {
-         console.log("Error, Los datos deben ser mayores a 0");
-         return;
-      }
-
-      const interesAcumulados = cantidadPrestamo * (tasaInteres / 100) * cantidadCuotas;
-      const montoTotal = cantidadPrestamo + interesAcumulados;
-      console.log("Simular Prestamo: ");
-      console.log("El monto a prestar es de $" + cantidadPrestamo);
-      console.log("Más la tasa de interes del " + tasaInteres + "%");
-      console.log("Por un periodo de " + cantidadCuotas + (cantidadCuotas == 1 ? " mes" : " meses"));
-      console.log("Dónde el valor acumulado de los interes de " + (cantidadCuotas == 1 ? "la " : "las ") + cantidadCuotas + (cantidadCuotas == 1 ? " cuota" : " cuotas") + " es de $" + interesAcumulados);
-      console.log("Entonces el total a pagar a lo largo de " + cantidadCuotas + (cantidadCuotas == 1 ? " mes" : " meses") + " es de $" + montoTotal);
-   }
+   // Resto de métodos de la clase...
 
    // Método para calcular intereses acumulados
    CalcularIntereses(tasaInteres, periodoMeses) {
@@ -102,12 +77,15 @@ class Banco {
          return;
       }
 
-      const interesAcumulados = this._saldoInicial * (tasaInteres / 100) * periodoMeses;
+      const interesAcumulados = this._saldoInicial * (tasaInteres / 100) * periodoMeses; // Calcula los intereses acumulados
       console.log("Intereses Acumulados:");
       console.log(`Con una tasa de interés del ${tasaInteres}% durante ${periodoMeses} meses, los intereses acumulados son de $${interesAcumulados}.`);
    }
 
 }
+
+module.exports = Banco; // Exportar la clase Banco
+
 
 
 // const miBanco = new Banco("Bancolombia", 0);
