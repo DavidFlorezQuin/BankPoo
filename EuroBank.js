@@ -1,4 +1,4 @@
-const Banco = require('./Banco'); 
+const Banco = require('./banco'); 
 
 class EuroBank extends Banco {
     constructor(saldoInicial, intereses) {
