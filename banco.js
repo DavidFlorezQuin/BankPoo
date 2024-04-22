@@ -24,7 +24,7 @@ class Banco {
       return this._saldoInicial;
    }
 
-// MÉTODO DEPOSITAR
+   // MÉTODO DEPOSITAR
    Depositar(montoDepositar) {
       this.saldoInicial += montoDepositar;
       console.log();
@@ -48,7 +48,7 @@ class Banco {
    }
 
    // CONSULTAR SALDO
-   ConsultarSaldo(){
+   ConsultarSaldo() {
       console.log("Consultar saldo:");
       console.log("El saldo es de $" + this.saldoInicial);
       console.log();
@@ -63,15 +63,15 @@ class Banco {
       console.log();
    }
 
-   
-   TransferirDinero(montoTransferir, recaudo, cuenta){
+
+   TransferirDinero(montoTransferir, recaudo, cuenta) {
 
       let totalTransferir = montoTransferir * recaudo;
 
       if (totalTransferir <= this.saldoInicial) {
 
          this.saldoInicial -= totalTransferir;
-         console.log("El dinero se tranferirá a la cuenta: "+cuenta)
+         console.log("El dinero se tranferirá a la cuenta: " + cuenta)
          console.log("El saldo que quedo es de $" + this.saldoInicial)
       } else {
          console.log("El saldo es insuficiente")
@@ -81,8 +81,8 @@ class Banco {
    //PRESTAR DINERO A 5 CUOTAS CON EL VALOR DE INTERES ACUMULADOS
    SimularPrestamo(tasaInteres, cantidadPrestamo, cantidadCuotas) {
       if (tasaInteres <= 0 || cantidadPrestamo <= 0 || cantidadCuotas <= 0) {
-          console.log("Error, Los datos deben ser mayores a 0");
-          return;
+         console.log("Error, Los datos deben ser mayores a 0");
+         return;
       }
 
       const interesAcumulados = cantidadPrestamo * (tasaInteres / 100) * cantidadCuotas;
@@ -93,8 +93,20 @@ class Banco {
       console.log("Por un periodo de " + cantidadCuotas + (cantidadCuotas == 1 ? " mes" : " meses"));
       console.log("Dónde el valor acumulado de los interes de " + (cantidadCuotas == 1 ? "la " : "las ") + cantidadCuotas + (cantidadCuotas == 1 ? " cuota" : " cuotas") + " es de $" + interesAcumulados);
       console.log("Entonces el total a pagar a lo largo de " + cantidadCuotas + (cantidadCuotas == 1 ? " mes" : " meses") + " es de $" + montoTotal);
-  }
-   
+   }
+
+   // Método para calcular intereses acumulados
+   CalcularIntereses(tasaInteres, periodoMeses) {
+      if (tasaInteres <= 0 || periodoMeses <= 0) {
+         console.log("Error: La tasa de interés y el periodo deben ser mayores a 0.");
+         return;
+      }
+
+      const interesAcumulados = this._saldoInicial * (tasaInteres / 100) * periodoMeses;
+      console.log("Intereses Acumulados:");
+      console.log(`Con una tasa de interés del ${tasaInteres}% durante ${periodoMeses} meses, los intereses acumulados son de $${interesAcumulados}.`);
+   }
+
 }
 
 
@@ -103,4 +115,6 @@ class Banco {
 // miBanco.Retirar(300);
 // miBanco.ConsultarSaldo();
 // miBanco.Prestar(600);
+//const miBanco = new Banco("Bancolombia", 1000);
+//miBanco.CalcularIntereses(5, 12); // Calcula intereses acumulados al 5% durante 12 meses
 module.exports = Banco; // Exportar la clase Banco
