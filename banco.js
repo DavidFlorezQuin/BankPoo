@@ -70,9 +70,9 @@ class Banco {
 }
 
 
-const miBanco = new Banco("Bancolombia", 0);
-miBanco.Depositar(500);
-miBanco.Retirar(300);
-miBanco.ConsultarSaldo();
-miBanco.Prestar(600);
-module.exports = Banco; // Exportar la clase Banco
+// const miBanco = new Banco("Bancolombia", 0);
+// miBanco.Depositar(500);
+// miBanco.Retirar(300);
+// miBanco.ConsultarSaldo();
+// miBanco.Prestar(600);
+// module.exports = Banco; // Exportar la clase Banco
