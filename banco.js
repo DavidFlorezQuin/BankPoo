@@ -1,98 +1,182 @@
+//Inicializar operación nativa de recibir datos
+const readline = require("readline");
 
-///CLASE PADRE
+// Definición de la clase Banco
 class Banco {
-   // Constructor de la clase Banco
-   constructor(nombre, saldoInicial = 0) {
-      this.nombre = nombre; // Asigna el nombre del banco
-      this.saldoInicial = saldoInicial; // Asigna el saldo inicial
-   }
+  constructor(nombre, saldoInicial = 0) {
+    this.nombre = nombre;
+    this.saldoInicial = saldoInicial;
+    this.transacciones = []; // Arreglo para almacenar las transacciones
+  }
 
-   // ENCAPSULAMIENTO
+  Depositar(montoDepositar, descuentoDepositado) {
+    this.saldoInicial += montoDepositar;
+    this.saldoInicial -= descuentoDepositado;
+    console.log("Se depositó $" + montoDepositar);
+    console.log("Por cada deposito el banco le restará: " + descuentoDepositado)
+    console.log("Su saldo es de $" + this.saldoInicial);
+    this.transacciones.push(`Depósito de $${montoDepositar}`); // Registrar la transacción
+  }
 
-   // Setter para el nombre del banco
-   set nombre(nombre) {
-      this._nombre = nombre; // Asigna el nombre utilizando una variable interna
-   }
+  Retirar(vRetirar) {
+    if (vRetirar <= this.saldoInicial) {
+      this.saldoInicial -= vRetirar;
+      console.log(
+        "Retiraste $" +
+        vRetirar +
+        ". El saldo actual es de $" +
+        this.saldoInicial
+      );
+      this.transacciones.push(`Retiro de $${vRetirar}`); // Registrar la transacción
+    } else {
+      console.log("El saldo es insuficiente");
+    }
+  }
 
-   // Getter para el nombre del banco
-   get nombre() {
-      return this._nombre; // Retorna el nombre almacenado en la variable interna
-   }
 
-   // Setter para el saldo inicial
-   set saldoInicial(saldoInicial) {
-      this._saldoInicial = saldoInicial; // Asigna el saldo inicial utilizando una variable interna
-   }
 
-   // Getter para el saldo inicial
-   get saldoInicial() {
-      return this._saldoInicial; // Retorna el saldo inicial almacenado en la variable interna
-   }
-
-   // MÉTODO DEPOSITAR
-   Depositar(montoDepositar) {
-      this.saldoInicial += montoDepositar; // Incrementa el saldo con el monto depositado
-      console.log();
-      console.log("Depositar:");
-      console.log("Se depositó $" + montoDepositar);
-      console.log("El saldo es de $" + this.saldoInicial);
-      console.log();
-   }
-
-   // MÉTODO DE RETIRAR DINERO
-   Retirar(vRetirar) {
-      if (vRetirar <= this.saldoInicial) {
-         this.saldoInicial -= vRetirar; // Reduce el saldo con el monto a retirar
-         console.log("Retirar:");
-         console.log("Retiraste $" + vRetirar + ". El saldo actual es de $" + this.saldoInicial)
-         console.log();
-      } else {
-         console.log("El saldo es insuficiente");
-         console.log();
-      }
-   }
-
-   // CONSULTAR SALDO
-   ConsultarSaldo() {
-      console.log("Consultar saldo:");
-      console.log("El saldo es de $" + this.saldoInicial);
-      console.log();
-   }
-
-   // PRESTAR DINERO A UNA CUOTA
-   Prestar(montoPrestar, montoTotal, interes = 1.10) {
-      montoTotal = montoPrestar * interes; // Calcula el monto total a pagar con intereses
-      console.log("Prestamo:");
-      console.log("La tasa de interes es del " + interes + "%");
-      console.log("Realizas un prestamo de $" + montoPrestar + " el total a pagar con intereses es de $" + montoTotal);
-      console.log();
-   }
-
-   // Resto de métodos de la clase...
-
-   // Método para calcular intereses acumulados
-   CalcularIntereses(tasaInteres, periodoMeses) {
-      if (tasaInteres <= 0 || periodoMeses <= 0) {
-         console.log("Error: La tasa de interés y el periodo deben ser mayores a 0.");
-         return;
-      }
-
-      const interesAcumulados = this._saldoInicial * (tasaInteres / 100) * periodoMeses; // Calcula los intereses acumulados
-      console.log("Intereses Acumulados:");
-      console.log(`Con una tasa de interés del ${tasaInteres}% durante ${periodoMeses} meses, los intereses acumulados son de $${interesAcumulados}.`);
-   }
-
+  Prestar(montoPrestar, interes) {
+    const montoTotal = montoPrestar * interes;
+    if (montoPrestar <= this.saldoInicial) { // Verificar si se puede prestar
+        console.log(
+          "Realizas un préstamo de $" +
+          montoPrestar +
+          ". El total a pagar con intereses es de $" +
+          montoTotal
+        );
+        this.saldoInicial -= montoPrestar; // Restar el préstamo al saldo inicial
+        this.transacciones.push(`Préstamo de $${montoPrestar}`); // Registrar la transacción
+    } else {
+        console.log("No se puede realizar el préstamo. El saldo es insuficiente.");
+    }
 }
 
-module.exports = Banco; // Exportar la clase Banco
+  ConsultarSaldo() {
+    console.log("El saldo es de $" + this.saldoInicial);
+  }
+  // Método para mostrar un resumen de transacciones
+  mostrarResumenTransacciones() {
+    console.log("\n--- Resumen de Transacciones ---");
+    if (this.transacciones.length === 0) {
+      console.log("Aún no se han realizado transacciones en esta sesión.");
+    } else {
+      this.transacciones.forEach((transaccion, index) => {
+        console.log(`${index + 1}. ${transaccion}`);
+      });
+    }
+  }
+}
 
+// Función para iniciar el programa
+function iniciarPrograma() {
+  //función para obtener desde terminal el dato que ingrese el usuario
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
+  // Crear una instancia de Banco
+  const miBanco = new Banco("Mi Banco");
 
-// const miBanco = new Banco("Bancolombia", 0);
-// miBanco.Depositar(500);
-// miBanco.Retirar(300);
-// miBanco.ConsultarSaldo();
-// miBanco.Prestar(600);
-//const miBanco = new Banco("Bancolombia", 1000);
-//miBanco.CalcularIntereses(5, 12); // Calcula intereses acumulados al 5% durante 12 meses
-module.exports = Banco; // Exportar la clase Banco
+  // Función para mostrar el menú
+  function mostrarMenu() {
+    console.log("\nBienvenido al Banco " + miBanco.nombre);
+    console.log("Que operación deseas realizar: ");
+    console.log("1. Depositar");
+    console.log("2. Retirar");
+    console.log("3. Consultar Saldo");
+    console.log("4. Prestar");
+    console.log("5. Mostrar Resumen de Transacciones");
+    console.log("6. Salir");
+    rl.question("Seleccione una opción: ", (opcion) => {
+      // Convertir la opción a número
+      opcion = parseInt(opcion);
+
+      // Ejecutar la opción seleccionada
+      switch (opcion) {
+        case 1:
+          rl.question("Ingrese el monto a depositar: ", (monto) => {
+            miBanco.Depositar(parseFloat(monto), descuentoDepositado);
+            mostrarMenu(); // Mostrar el menú nuevamente
+          });
+          break;
+        case 2:
+          rl.question("Ingrese el monto a retirar: ", (monto) => {
+            miBanco.Retirar(parseFloat(monto));
+            mostrarMenu(); // Mostrar el menú nuevamente
+          });
+          break;
+        case 3:
+          miBanco.ConsultarSaldo();
+          mostrarMenu(); // Mostrar el menú nuevamente
+          break;
+        case 4:
+          rl.question("Ingrese el monto a prestar: ", (monto) => {
+            miBanco.Prestar(parseFloat(monto), interes);
+            mostrarMenu(); // Mostrar el menú nuevamente
+          });
+          break;
+        case 5:
+          miBanco.mostrarResumenTransacciones();
+          mostrarMenu(); // Mostrar el menú nuevamente
+          break;
+        case 6:
+          rl.close(); // Cerrar el programa
+          break;
+        default:
+          console.log("Opción no válida.");
+          mostrarMenu(); // Mostrar el menú nuevamente
+      }
+    });
+  }
+
+  var interes;
+  var descuentoDepositado;
+
+  //Función para mostrar sucursales
+  function mostrarSucursal() {
+    console.log("Elige tu sucursal");
+    console.log("1. EuroBank");
+    console.log("2. AmericaBank");
+    console.log("3. AsiaBank");
+    console.log("4. OceanBank");
+    console.log("5. Salir");
+    rl.question("Seleccione una opción: ", (opcion) => {
+      // Convertir la opción a número
+      opcion = parseInt(opcion);
+
+      // Ejecutar la opción seleccionada
+      switch (opcion) {
+        case 1:
+          interes = 1.3;
+          descuentoDepositado = 5;
+          break;
+        case 2:
+          interes = 1.5;
+          descuentoDepositado = 6;
+          break;
+        case 3:
+          interes = 1.2;
+          descuentoDepositado = 3;
+          break;
+        case 4:
+          interes = 2.3;
+          descuentoDepositado = 8;
+          break;
+        case 5:
+          rl.close(); // Cerrar el programa
+          break;
+        default:
+          console.log("Opción no válida.");
+          mostrarSucursal(); // Mostrar el menú nuevamente
+      }
+      mostrarMenu();
+    });
+  }
+
+  // Muestra el primer menú
+  mostrarSucursal();
+}
+
+// Iniciar el programa
+iniciarPrograma();
